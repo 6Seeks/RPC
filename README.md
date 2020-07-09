@@ -67,6 +67,21 @@ class MyServer(RPCServer):
 
 例如，只需要通过继承基础PRC调用框架，增加调用方法即可
 
+
+## 使用github 协作开发
+
+    https://github.com/yangtaoMark/RPC
+
+开发者
+
+    yangtaoMark, dreaming0017
+
+多分枝开发
+    ![RPC](./RPC/branch.png)
+
+分支合并
+    ![RPC](./RPC/pullrequest.png)
+
 ## 课程实验建议
 
 对于RPC简易框架实验，可否更加明确需求，而非简单设立标准。
