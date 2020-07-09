@@ -13,10 +13,10 @@
 
 using namespace std;
 
-class RFCClient{
+class RPCClient{
 	private:
 		SOCKET sclient;
-		sockaddr_in serAddr;//处理服务端地址的结构，包含地址族、端口、ip地址
+		sockaddr_in serAddr;
 	
 	public:
 		
@@ -27,9 +27,9 @@ class RFCClient{
 	            printf("invalid socket!");
 	            return 0;
 	        }
-	        serAddr.sin_family = AF_INET;//IP地址族
-	        serAddr.sin_port = htons(port);//服务端端口
-	        serAddr.sin_addr.S_un.S_addr = inet_addr(ip.c_str());//服务端ip
+	        serAddr.sin_family = AF_INET;
+	        serAddr.sin_port = htons(port);
+	        serAddr.sin_addr.S_un.S_addr = inet_addr(ip.c_str());
 	        if (connect(sclient, (sockaddr *)&serAddr, sizeof(serAddr)) == SOCKET_ERROR)
 	        {
 	            printf("connect error !");
@@ -45,7 +45,7 @@ class RFCClient{
 			string functionName = func;
 			rapidjson::StringBuffer s;
 			rapidjson::Writer<rapidjson::StringBuffer> writer(s);
-            //将发送数据封装成json格式
+            //create json
 			writer.StartObject();
 			writer.Key("type");
 			writer.String(type.c_str());
@@ -69,7 +69,7 @@ class RFCClient{
 			string recData(tem);
 	        cout << "receive:" << recData << endl;
 	        closesocket(sclient);
-	        //解析接收到数据
+	        //read json
 	        rapidjson::Document document;
   			document.Parse(recData.c_str());
 	        rapidjson::Value::ConstMemberIterator iter2 = document.FindMember("result");
@@ -88,7 +88,7 @@ int main()
     if (WSAStartup(sockVersion, &data) != 0) return 0;
 
 	for(int i = 0; i < 5; i++){
-		RFCClient client;
+		RPCClient client;
 		if(client.init("127.0.0.1", 8000) == 0){
 			return 0;
 		}
