@@ -45,11 +45,11 @@ class RFCClient{
 			string functionName = func;
 			rapidjson::StringBuffer s;
 			rapidjson::Writer<rapidjson::StringBuffer> writer(s);
-
+            //将发送数据封装成json格式
 			writer.StartObject();
 			writer.Key("type");
 			writer.String(type.c_str());
-			writer.Key("async");
+			writer.Key("sync");
 			writer.Bool(true);
 			writer.Key("functionName");
 			writer.String(func.c_str());
@@ -64,14 +64,12 @@ class RFCClient{
 			string sendData = s.GetString();
 	        send(sclient, sendData.c_str(), strlen(sendData.c_str()), 0);
 			cout << "send:" << sendData << endl;
-	        char tem[255];
-	        int ret = recv(sclient, tem, 255, 0);
+	        char tem[1024];
+	        int ret = recv(sclient, tem, 1024, 0);
 			string recData(tem);
-	        if (ret>0) {
-	            tem[ret] = '\0';
-	            cout << "receive:" << tem << endl;
-	        }
+	        cout << "receive:" << recData << endl;
 	        closesocket(sclient);
+	        //解析接收到数据
 	        rapidjson::Document document;
   			document.Parse(recData.c_str());
 	        rapidjson::Value::ConstMemberIterator iter2 = document.FindMember("result");
